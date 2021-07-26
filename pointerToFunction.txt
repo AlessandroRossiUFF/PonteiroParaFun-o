@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int (*operacao)(int,int)=NULL; // ponteiro
+
+void EscolheOperacao(int (*funcao)(int a, int b)){
+  operacao=funcao;
+} // aponta
+
+int RealizaOperacao(int a, int b){
+  if (operacao!=NULL){
+    return operacao(a,b);
+  }
+  return 0;
+} // realiza
+
+///////////////////////////  ./main
+
+int Soma(int a, int b){ // ./main 2 3
+  printf("O result foi: %d", a+b);
+  return a+b;
+}
+
+int main(int argc, char **argv) {
+  int nB, nA;
+  EscolheOperacao(Soma);
+  nA = atoi(argv[1]);
+  nB = atoi(argv[2]);
+  RealizaOperacao(5, 3);
+  printf("O result 2 foi: %d", nA);
+  return 0;
+}

@@ -1,0 +1,150 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct lista {
+ int info;
+ struct lista* prox;
+};
+typedef struct lista Lista;
+typedef struct lista Lista2;
+
+/* função de inicialização: retorna uma lista vazia */
+Lista* inicializa (void)
+{
+ return NULL;
+}
+
+/* inserção no início: retorna a lista atualizada */
+Lista* insere (Lista* l, int i)
+{
+ Lista* novo = (Lista*) malloc(sizeof(Lista));
+ novo->info = i;
+ novo->prox = l;
+ return novo;
+}
+
+
+void imprime (Lista* l)
+{
+ Lista* p; /* variável auxiliar para percorrer a lista */
+ for (p = l; p != NULL; p = p->prox)
+ printf("info = %d\n", p->info);
+}
+
+/* função vazia: retorna 1 se vazia ou 0 se não vazia */
+int vazia (Lista* l)
+{
+ if (l == NULL)
+ return 1;
+ else
+ return 0;
+}
+
+/* função busca: busca um elemento na lista */
+Lista* busca (Lista* l, int v)
+{
+ Lista* p;
+ for (p=l; p!=NULL; p=p->prox)
+ if (p->info == v)
+ return p;
+ return NULL; /* não achou o elemento */
+}
+
+/* função retira: retira elemento da lista */
+Lista* retira (Lista* l, int v) {
+ Lista* ant = NULL; /* ponteiro para elemento anterior */
+ Lista* p = l; /* ponteiro para percorrer a lista*/
+ /* procura elemento na lista, guardando anterior */
+ while (p != NULL && p->info != v) {
+ ant = p;
+ p = p->prox;
+ }
+ /* verifica se achou elemento */
+ if (p == NULL)
+ return l; /* não achou: retorna lista original */
+ /* retira elemento */
+ if (ant == NULL) {
+ /* retira elemento do inicio */
+ l = p->prox;
+ }
+ else {
+ /* retira elemento do meio da lista */
+ ant->prox = p->prox;
+ }
+ free(p);
+ return l;
+}
+
+Lista* concatena(Lista* lis1, Lista* lis2) {
+    if (lis1 == NULL) return lis2;
+    if (lis2 == NULL) return lis1;
+
+    Lista* tmp1 = lis1;
+    while (lis1 != NULL) {
+        lis1 = lis1->prox;
+    }
+    lis1->prox = lis2;
+
+    return lis1;
+}
+
+void printList(Lista* curr) {
+    while (curr != NULL) {
+        printf("%d ", curr->info);
+        curr = curr->prox;
+    }
+
+    printf("\n");
+}
+
+int main (void)
+{
+  Lista* l; /* declara uma lista não inicializada */
+  l = inicializa(); /* inicializa lista como vazia */
+  l = insere(l, 23); /* insere na lista o elemento 23 */
+  l = insere(l, 45); /* insere na lista o elemento 45 */
+  Lista* l2; /* declara uma lista não inicializada */
+  l2 = inicializa(); /* inicializa lista como vazia */
+  l2 = insere(l2, 2); /* insere na lista o elemento 23 */
+  l2 = insere(l2, 4); /* insere na lista o elemento 45 */
+  imprime(l);
+  printf("\n");
+  retira(l, 23);
+  imprime(l);
+  printf("\n");
+  imprime(l2);
+  Lista* l3;
+  //printList(concatena(l, l2));
+  //l=concatena(l, l2);
+  //concatena(l, l);
+
+  Lista* first1 = malloc(sizeof(Lista));
+  Lista* second1 = malloc(sizeof(Lista));
+  Lista* first2 = malloc(sizeof(Lista));
+  Lista* second2 = malloc(sizeof(Lista));
+
+  first1->info = 1;
+  first1->prox = second1;
+  second1->info = 2;
+  second1->prox = NULL;
+
+  first2->info = 3;
+  first2->prox = second2;
+  second2->info = 4;
+  second2->prox = NULL;
+
+  printf("Lista 1: ");
+  printList(first1);
+  printf("Lista 2: ");
+  printList(first2);
+
+  //printList(concatena(first1, first2));
+
+  free(first1);
+  free(first2);
+  free(second1);
+  free(second2);
+
+  return 0;
+}

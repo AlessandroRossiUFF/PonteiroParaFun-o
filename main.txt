@@ -1,0 +1,161 @@
+//
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct elemento {
+ int valor;
+ struct elemento* prox;
+};
+typedef struct elemento Lista;
+
+Lista* inicializa (void)
+{
+ return NULL;
+}
+
+struct elemento *CriaElemento(int numero){
+  struct elemento *resp = (struct elemento*) malloc(sizeof(struct elemento));
+  resp->valor=numero;
+  resp->prox=NULL;
+  return resp;
+}
+
+struct elemento *InsereInicio(struct elemento *lista, int numero){
+  struct elemento *novo=CriaElemento(numero);
+  novo->prox=lista;
+  lista=novo;
+  return lista;
+}
+
+struct elemento *InsereFim(struct elemento *lista, int numero){
+  struct elemento *aux;
+  struct elemento *novo=CriaElemento(numero);
+  if(lista==NULL){
+    lista=novo;
+  }else{
+    aux=lista;
+    while(aux->prox != NULL)
+      aux=aux->prox;
+    aux->prox=novo;
+  }
+  return lista;
+}
+
+struct elemento *Concatenar(struct elemento *lista, struct elemento *lista2){
+  struct elemento *aux;
+  struct elemento *novo=CriaElemento(lista2->valor);
+  if(lista==NULL){
+    lista=novo; // recebe 1
+  }else{
+    aux=lista;
+    while(aux->prox != NULL)
+      aux=aux->prox;
+    aux->prox=novo;
+  }
+  Lista* p;
+  for (p = lista2; p != NULL; p = p->prox)
+    aux=p->prox;
+    //printf("info = %d\n", p->valor);
+  
+  return lista;
+}
+
+Lista* concatena(Lista* lis1, Lista* lis2) {
+    if (lis1 == NULL) return lis2;
+    if (lis2 == NULL) return lis1;
+
+    Lista* tmp1 = lis1;
+    while (lis1 != NULL) {
+        lis1 = lis1->prox;
+    }
+    lis1->prox = lis2;
+
+    return lis1;
+}
+
+void printList(Lista* curr) {
+    while (curr != NULL) {
+        printf("%d ", curr->valor);
+        curr = curr->prox;
+    }
+
+    printf("\n");
+}
+
+struct elemento *Busca(struct elemento *lista, int numero){
+  struct elemento *aux=lista;
+  while(aux!=NULL&&aux->valor!=numero)
+    aux=aux->prox;
+  return aux;
+}
+
+void imprime (Lista* l){
+ Lista* p; /* variável auxiliar para percorrer a lista */
+ for (p = l; p != NULL; p = p->prox)
+ printf("info = %d\n", p->valor);
+}
+
+/* função retira: retira elemento da lista */
+Lista* remover (Lista* l, int v) {
+ Lista* ant = NULL; /* ponteiro para elemento anterior */
+ Lista* p = l; /* ponteiro para percorrer a lista*/
+ /* procura elemento na lista, guardando anterior */
+ while (p != NULL && p->valor != v) {
+ ant = p;
+ p = p->prox;
+ }
+ /* verifica se achou elemento */
+ if (p == NULL)
+ return l; /* não achou: retorna lista original */
+ /* retira elemento */
+ if (ant == NULL) {
+ /* retira elemento do inicio */
+ l = p->prox;
+ }
+ else {
+ /* retira elemento do meio da lista */
+ ant->prox = p->prox;
+ }
+ free(p);
+ return l;
+}
+
+/* função vazia: retorna 1 se vazia ou 0 se não vazia */
+int vazia (Lista* l)
+{
+ if (l == NULL)
+ return 1;
+ else
+ return 0;
+}
+
+int main(void) {
+  Lista* l;
+  l = inicializa();
+  //l = CriaElemento(3);
+  l = InsereInicio(l, 7);
+  l = InsereInicio(l, 9);
+  l = InsereFim(l, 11);
+  remover(l, 3);
+  imprime(l);
+  //////////////////////
+  printf("\n\n");
+  Lista* a;
+  Lista* c;
+  c = CriaElemento(2);
+  a = CriaElemento(2);
+  a = InsereInicio(a, 4);
+  a = InsereInicio(a, 6);
+  //remover(l, 3);
+  imprime(a);
+  struct elemento *aux;
+  Lista* p;
+  for (p = a; p != NULL; p = p->prox)
+    l=InsereFim(l, p->valor);
+    //aux=p->prox;
+  printf("\n\n");
+  //l=inicializa();
+  imprime(l);
+}
+
